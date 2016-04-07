@@ -1,6 +1,6 @@
 <?php
 
-$events = array("tiger", "car", "book"); //List of values to search
+$events = array("tiger", "car", "bus"); //List of values to search
 $url = "http://localhost:5000/image/";	//Api for image library
 
 function httpGet($url)
@@ -41,7 +41,16 @@ $v = $events[$k];
 $result = json_decode(httpGet($url.$v));	//get a random image from library
 //var_dump(json_decode($result, true));
 $sz = array_rand($result->res);	//pick a random image from a random 'event' of image array
-echo $result->res[$sz]->url;	//grab the image url
+$uri = $result->res[$sz]->url;	//grab the image url
+echo $uri;
+$uri = base64_decode($uri);
+//echo $uri;
+$im = imagecreatefromstring($uri);
+
+//$imgPng = imageCreateFromPng($uri);
+header("Content-type: image/png");
+imagePng($im); 
+
 
 //echo $result;
 ?>
